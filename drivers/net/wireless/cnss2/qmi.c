@@ -12,7 +12,6 @@
 #include "main.h"
 #include "qmi.h"
 #include "genl.h"
-#include "hwid.h"
 
 #define WLFW_SERVICE_INS_ID_V01		1
 #define WLFW_CLIENT_ID			0x4b4e454c
@@ -639,10 +638,6 @@ static int cnss_get_bdf_file_name(struct cnss_plat_data *plat_priv,
 {
 	char filename_tmp[MAX_FIRMWARE_NAME_LEN];
 	int ret = 0;
-	uint32_t hw_platform_ver = 0;
-	uint32_t hw_country_ver = 0;
-	hw_country_ver = get_hw_country_version();
-	hw_platform_ver = get_hw_version_platform();
 
 	switch (bdf_type) {
 	case CNSS_BDF_ELF:
@@ -3298,15 +3293,15 @@ int cnss_qmi_get_dms_mac(struct cnss_plat_data *plat_priv)
 	}
 
 	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-                if (resp.resp.error == DMS_MAC_NOT_PROVISIONED) {
-                        cnss_pr_err("NV MAC address is not provisioned");
-                        plat_priv->dms.nv_mac_not_prov = 1;
-                        ret = -resp.resp.result;
-                } else {
-                        cnss_pr_err("QMI_DMS_GET_MAC_ADDRESS_REQ_V01 failed, result: %d, err: %d\n",
-                                    resp.resp.result, resp.resp.error);
-                        ret = -EAGAIN;
-                }
+		if (resp.resp.error == DMS_MAC_NOT_PROVISIONED) {
+			cnss_pr_err("NV MAC address is not provisioned");
+			plat_priv->dms.nv_mac_not_prov = 1;
+			ret = -resp.resp.result;
+		} else {
+			cnss_pr_err("QMI_DMS_GET_MAC_ADDRESS_REQ_V01 failed, result: %d, err: %d\n",
+				    resp.resp.result, resp.resp.error);
+			ret = -EAGAIN;
+		}
 		goto out;
 	}
 	if (!resp.mac_address_valid ||
