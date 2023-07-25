@@ -165,3 +165,8 @@ arch/arm/boot/dts/vendor
 # Documentation toolchain
 sphinx_*/
 
+# Lmperf add
+out/
+lmperf/output/
+lmperf/anykernel3/
+
