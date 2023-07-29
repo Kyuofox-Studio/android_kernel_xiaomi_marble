@@ -3557,6 +3557,7 @@ static char *module_blacklist;
 static char *custom_module_blacklist[] = {
 /*
     // Built-In modules
+    "zram", "zsmalloc",
     // Coresight
     "coresight", "coresight_csr", "coresight_cti", "coresight_dummy", "coresight_funnel",
     "coresight_hwevent", "coresight_remote_etm", "coresight_replicator", "coresight_stm",
@@ -3575,6 +3576,7 @@ static bool blacklisted(const char *module_name)
 	for (p = module_blacklist; *p; p += len) {
 		len = strcspn(p, ",");
 		if (strlen(module_name) == len && !memcmp(module_name, p, len))
+            pr_info("Found module [%s] in blacklist.\n", module_name);
 			return true;
 		if (p[len] == ',')
 			len++;
@@ -3582,8 +3584,10 @@ static bool blacklisted(const char *module_name)
 
 custom_blacklist:
 	for (i = 0; i < ARRAY_SIZE(custom_module_blacklist); ++i)
-		if (!strcmp(module_name, custom_module_blacklist[i]))
+		if (!strcmp(module_name, custom_module_blacklist[i])) {
+            pr_info("Found module [%s] in custom blacklist.\n", module_name);
 			return true;
+        }
 
 	return false;
 }
@@ -4033,7 +4037,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	 * if it's blacklisted.
 	 */
 	if (blacklisted(info->name)) {
-		err = -EPERM;
+		//err = -EPERM;
 		pr_err("Module %s is blacklisted\n", info->name);
 		goto free_copy;
 	}
