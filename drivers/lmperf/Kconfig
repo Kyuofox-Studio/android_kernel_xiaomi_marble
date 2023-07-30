@@ -1,0 +1,27 @@
+menu "LMPERF"
+
+config LMPERF
+	tristate "lmperf kernel functions support"
+	default y
+	help
+	 Only for lmperf kernel.
+
+config LMPERF_TEST
+	tristate "lmperf kernel public test support"
+	default n
+	help
+	 Enable test functions for testing globally.
+
+config LMPERF_HELLOWORLD
+	tristate "lmperf kernel welcome message support"
+	default y
+	help
+	 Print welcome message on kernel message.
+
+config LMPERF_OPTIMIZATION
+	tristate "lmperf kernel optimization support"
+	default y
+	help
+	 Enbale optimization for lmperf kernel.
+
+endmenu
