@@ -1,1 +1,1 @@
-obj-$(CONFIG_LMPERF_OPTIMIZATION) += optimization.o
+#obj-$(CONFIG_LMPERF_OPTIMIZATION) += optimization.o
